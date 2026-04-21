@@ -1,0 +1,286 @@
+:root {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --accent-color: #ffffff;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --grain-opacity: 0.08;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+    height: 100vh;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Texture Layers */
+.vhs-overlay, .grain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.vhs-overlay {
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                linear-gradient(90deg, rgba(255,0,0,0.01), rgba(0,255,0,0.01), rgba(0,0,255,0.01));
+    background-size: 100% 3px, 2px 100%;
+    opacity: 0.1;
+}
+
+.grain {
+    background: transparent url('https://upload.wikimedia.org/wikipedia/commons/7/76/Noise_generated_by_a_digital_sensor.png') repeat;
+    opacity: var(--grain-opacity);
+    animation: grain-shift 0.1s infinite;
+}
+
+@keyframes grain-shift {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(-1%, -1%); }
+    20% { transform: translate(1%, 2%); }
+    100% { transform: translate(0, 0); }
+}
+
+/* Scene Setup */
+.scene {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    background: url('bg.jpg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+}
+
+.scene::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Darken bg for readability */
+    z-index: 1;
+}
+
+.grid-container {
+    width: 100%;
+    max-width: 1200px;
+    height: 80vh;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 3rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Header & Branding */
+.header {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-text {
+    font-family: 'Sedgwick Ave Display', cursive;
+    font-size: clamp(3rem, 15vw, 12rem);
+    line-height: 1;
+    text-transform: uppercase;
+    filter: url(#liquid);
+    opacity: 0;
+    transform: rotate(-5deg);
+    color: #fff;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+/* Sidebar Sections */
+.sidebar {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 2rem;
+}
+
+.card {
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.content-text {
+    font-size: 1.2rem;
+    font-weight: 200;
+    line-height: 1.6;
+}
+
+.corner-x {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.5;
+}
+
+.list {
+    list-style: none;
+    font-weight: 200;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Center Meta / Tagline */
+.center-meta {
+    grid-column: 3;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+}
+
+.tagline-box {
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    height: fit-content;
+    font-size: 0.8rem;
+    letter-spacing: 0.3rem;
+    opacity: 0.7;
+}
+
+/* Footer Stats */
+.footer {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    display: flex;
+    gap: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.stat-label {
+    font-size: 0.6rem;
+    opacity: 0.4;
+    letter-spacing: 0.1rem;
+}
+
+.stat-value {
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.stat.active .stat-value {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Socials */
+.socials {
+    grid-column: 3;
+    grid-row: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.icons {
+    display: flex;
+    gap: 1rem;
+}
+
+.ico {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.ico svg {
+    width: 20px;
+    height: 20px;
+    fill: #fff;
+    transition: transform 0.3s ease;
+}
+
+.ico:hover {
+    background: #fff;
+    border-color: #fff;
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
+
+.ico:hover svg {
+    fill: #000;
+}
+
+.ico.tg:hover { background: #0088cc; border-color: #0088cc; }
+.ico.ig:hover { background: #e1306c; border-color: #e1306c; }
+.ico.tt:hover { background: #00f2ea; border-color: #00f2ea; }
+
+.ico:active {
+    transform: scale(0.9);
+}
+
+/* Animations */
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+        padding-bottom: 5rem;
+    }
+    .header, .sidebar, .center-meta, .footer, .socials {
+        grid-column: 1;
+        grid-row: auto;
+    }
+}
